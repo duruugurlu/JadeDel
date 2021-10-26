@@ -7,6 +7,7 @@
 
 <body>
 
+<!-- ~~~~~~~ Mine ~~~~~~~~ -->
 <script type="text/javascript">
 	 window.onload = function() {
 		 hide();
@@ -73,12 +74,21 @@
 			 return (mes + hour + ":" + add0 + min);
 		 }
 
+		 function isNumber(num) {
+			 for (i = 0; i < num.length; i++) {
+				 if (num.charAt(i) < '0' || num.charAt(i) > '9') {
+					 return false;
+				 }
+			 }
+			 return true;
+		 }
+
 		 function validate() {
 			 val = "";
 			 if (document.jadeForm.lname.value == "") {
 				val += "Please enter your last name. \n";
 			 }
-			 if (!document.getElementById("phone").value.match(/^\d+/)) {
+			 if (!isNumber(document.getElementById("phone").value)) {
 				 val += "Please put your phone number in digits! \n";
 			 }
 			 if (document.getElementById("phone").value.toString().length != 10) {
@@ -158,10 +168,7 @@
 	costs = new Array(0, 0, 0, 0, 0)
 </script>
 
-<script type="text/javascript">
-
-</script>
-
+<!-- ~~~~~~~ Mine ~~~~~~~~ -->
 
 <script language="javascript">
 
