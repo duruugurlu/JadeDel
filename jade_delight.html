@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Jade Delight</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+	 window.onload = function() {
+		 hide();
+
+		 for (i = 0; i < 5; i++) {
+			quan = document.forms["jadeForm"]["quan" + i];
+			costCalc(i, quan);
+		 }
+
+		 document.getElementById("but1").onclick = function() {
+			 pd = document.jadeForm.p_or_d[0]
+			 if (pd.checked) {
+				 val = validate()
+				 if (val == "") {
+					fin = "Thank you for ordering from Jade Delight!\n\nYour order:\n";
+ 					fin += order();
+ 					fin += "\nTotal: $" + document.jadeForm.total.value + "\n\n";
+ 					fin += time();
+ 					fin += "\nEnjoy :)";
+ 					alert(fin);
+				} else {
+					alert(val);
+				}
+			 } else {
+				 val = validateDel()
+				 if (val == "") {
+					fin = "Thank you for ordering from Jade Delight!\n\nYour order:\n";
+					fin += order();
+					fin += "\nTotal: $" + document.jadeForm.total.value + "\n\n";
+					fin += time();
+					fin += "\nEnjoy :)";
+					alert(fin);
+				} else {
+					alert(val);
+				}
+			 }
+
+		 }
+
+		 function order() {
+			 mes = "";
+			 for (i = 0; i < 5; i++) {
+				 if (costs[i] != 0) {
+					 num = costs[i] / menuItems[i].cost
+					 mes += num + " " + menuItems[i].name + "\xa0\ \xa0\ $";
+					 mes += costs[i] + "\n"
+				 }
+			 }
+			 return mes;
+		 }
+
+		 function time() {
+			 pd = document.jadeForm.p_or_d[0].checked
+			 d = new Date();
+
+			 hour = d.getHours();
+			 min = d.getMinutes() + (pd ? 15 : 30);
+			 hour = (min < 60) ? hour : (hour + 1);
+			 min = (min < 60) ? min : (min - 60);
+			 add0 = (min < 10) ? "0" : "";
+
+			 mes = pd ? "Your order will be ready for pick up at " : "Your order will be delivered at ";
+
+			 return (mes + hour + ":" + add0 + min);
+		 }
+
+		 function validate() {
+			 val = "";
+			 if (document.jadeForm.lname.value == "") {
+				val += "Please enter your last name. \n";
+			 }
+			 if (!document.getElementById("phone").value.match(/^\d+/)) {
+				 val += "Please put your phone number in digits! \n";
+			 }
+			 if (document.getElementById("phone").value.toString().length != 10) {
+				 val += "Please put in a full phone number! \n";
+			 }
+			 if (!valOrder()) {
+				val += "Please order at least one item! \n";
+			 }
+			 return val;
+		 }
+
+		 function validateDel() {
+			 val = "";
+			 if (document.jadeForm.lname.value == "") {
+				val += "Please enter your last name. \n";
+			 }
+			 if (document.jadeForm.street.value == "") {
+				val += "Please enter the delivery street. \n";
+			 }
+			 if (document.jadeForm.city.value == "") {
+				val += "Please enter the delivery city. \n";
+			 }
+			 if (!document.getElementById("phone").value.match(/^\d+/)) {
+				val += "Please put your phone number in digits! \n";
+			 }
+			 if (document.getElementById("phone").value.toString().length != 10) {
+				val += "Please put in a full phone number! \n";
+			 }
+			 if (!valOrder()) {
+				val += "Please order at least one item! \n";
+			 }
+			 return val;
+		 }
+
+		 function valOrder() {
+			 for (i = 0; i < 5; i++) {
+				 if (costs[i] != 0) {
+					 return true;
+				 }
+			 }
+			 return false;
+		 }
+
+		 function costCalc(index, quan) {
+			 quan.onchange = function() {
+				 addOn = menuItems[index].cost * quan.selectedIndex;
+				 costs[index] = addOn;
+				 document.jadeForm.cost[index].value = addOn;
+				 totCalc();
+			 }
+		 }
+
+	 }
+
+	 function totCalc() {
+		 total = 0;
+		 pre = document.jadeForm;
+		 for (i = 0; i < 5; i++) {
+			 total += costs[i];
+		 }
+		 tax = total * 0.0625;
+		 document.jadeForm.subtotal.value = total;
+		 document.jadeForm.tax.value = tax;
+		 document.jadeForm.total.value = total + tax
+	 }
+
+	function hide() {
+		document.getElementById("strText").style.display = "none";
+		document.getElementById("cityText").style.display = "none";
+	}
+
+	function display() {
+		document.getElementById("strText").style.display = "block";
+		document.getElementById("cityText").style.display = "block";
+	}
+
+	costs = new Array(0, 0, 0, 0, 0)
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+
+<script language="javascript">
+
+function MenuItem(name, cost)
+{
+	this.name = name;
+	this.cost=cost;
+}
+
+menuItems = new Array(
+	new MenuItem("Chicken Chop Suey", 4.5),
+	new MenuItem("Sweet and Sour Pork", 6.25),
+	new MenuItem("Shrimp Lo Mein", 5.25),
+	new MenuItem("Moo Shi Chicken", 6.5),
+	new MenuItem("Fried Rice", 2.35)
+);
+
+function makeSelect(name, minRange, maxRange)
+{
+	var t= "";
+	t = "<select name='" + name + "' size='1'>";
+	for (j=minRange; j<=maxRange; j++)
+	   t += "<option>" + j + "</option>";
+	t+= "</select>";
+	return t;
+}
+</script>
+
+<h1>Jade Delight</h1>
+<form name = "jadeForm">
+
+<p>First Name: <input type="text"  name='fname' /></p>
+<p>Last Name*:  <input type="text"  name='lname' /></p>
+<p id = "strText">Street: <input type="text"  name='street' /></p>
+<p id = "cityText">City: <input type="text"  name='city' /></p>
+<p>Phone*: <input type="text"  name='phone' id = 'phone' /></p>
+<p>
+	<input type="radio" name="p_or_d" value = "pickup" checked="checked" onchange="hide()"/>Pickup
+	<input type="radio" name='p_or_d' value = 'delivery' onchange="display()"/>
+	Delivery
+</p>
+<table border="0" cellpadding="3" name = "food">
+  <tr>
+    <th>Select Item</th>
+    <th>Item Name</th>
+    <th>Cost Each</th>
+    <th>Total Cost</th>
+  </tr>
+<script language="javascript">
+
+  var s = "";
+  for (i=0; i< menuItems.length; i++)
+  {
+	  s += "<tr><td>";
+	  s += makeSelect("quan" + i, 0, 10);
+	  s += "</td><td>" + menuItems[i].name + "</td>";
+	  s += "<td> $ " + menuItems[i].cost.toFixed(2) + "</td>";
+	  s += "<td>$<input type='text' name='cost'/></td></tr>";
+  }
+  document.writeln(s);
+</script>
+</table>
+<p>Subtotal:
+   $<input type="text"  name='subtotal' id="subtotal" />
+</p>
+<p>Mass tax 6.25%:
+  $ <input type="text"  name='tax' id="tax" />
+</p>
+<p>Total: $ <input type="text"  name='total' id="total" />
+</p>
+
+<input id="but1" type = "button" value = "Submit Order" />
+
+</form>
+</body>
+</html>
